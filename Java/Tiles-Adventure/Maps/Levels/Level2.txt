@@ -1,0 +1,9 @@
+16,8
+Wall_Y  grass  grass  WALL_NW DOOR_CLOSED WALL_NE grass  grass  WALL_Y grass  grass  grass  grass  grass  grass  grass
+Wall_T  Wall_X Wall_X Wall_T  Wood        Wall_T  Wall_X Wall_x Wall_T Wall_x Wall_X Wall_t Wall_x Wall_t Wall_x Wall_NE
+Wall_Y  wood   wood   WALL_SW DOOR_OPEN   WALL_SE wood   wood   WALL_Y wood   wood   Wall_x Leader Wall_x wood   Wall_Y
+Wall_Y  wood   wood   wood    wood        wood    wood   wood   WALL_Y wood   wood   wood   wood   wood   wood   Wall_Y
+Wall_Y  wood   wood   wood    wood        wood    wood   wood   WALL_Y wood   wood   wood   wood   wood   wood   Wall_Y
+Wall_Y  wood   wood   wood    wood        wood    wood   wood   WALL_x wood   wood   wood   wood   wood   wood   Wall_Y
+Wall_Y  wood   wood   wood    wood        wood    wood   wood   wood   wood   wood   wood   wood   wood   wood   Wall_Y
+Wall_SW Wall_X Wall_X Wall_X  Wall_X      Wall_X  Wall_X Wall_X Wall_X Wall_X Wall_X Wall_X Wall_X Wall_X Wall_X Wall_SE
