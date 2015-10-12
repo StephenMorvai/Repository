@@ -9,5 +9,5 @@ Developed using Java for a data management course.
 
 Tile-Adventure:
 
-An adventure game featuring a GUI. The images for the game have been lost.
+An adventure game featuring a GUI.
 Developed using Java
