@@ -1,0 +1,215 @@
+import java.util.*;
+public class Solution {
+	public static void main(String[] args) {
+	
+	class Number{
+	//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+		// your method for converting belongs here...
+	//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+		public Number convert(Number A, short Base) {
+			Number B=new Number();
+		    	B.Base=Base;
+	    		//B.Int=A.Int; B.NonRep=A.Int; B.Rep=A.Int;
+	    	// my code above is just to make sure it compiles and runs
+            
+            int val = 0; 
+            
+            for(int i = 0; i < A.Int.length; i++){
+                val += (int) A.Int[i] * Math.pow(A.Base,i);
+                
+                //System.out.println(val);
+            }
+            
+            //System.out.println("Value: " + val);
+            
+            short log = (short) (Math.log(val) / Math.log(B.Base));
+            
+            //System.out.println("log: " + log);
+            
+            B.Int = new short[log + 1];
+            for(int i = log; i >= 0; i--){
+                B.Int[i] = (short)( val / Math.pow(B.Base,i));
+                val = (short)( val % Math.pow(B.Base,i));
+                //System.out.println("val: " + val);
+            }
+            
+            //successfully did integer part
+            
+            if(A.NonRep.length == 0 && A.Rep.length == 0){
+                B.Rep = new short[0];
+                B.NonRep = new short[0];
+                return B;
+            }
+            
+            //convert decimal
+            
+            Number frac = new Number();
+            frac.Base = A.Base;
+            frac.Int = Arrays.copyOfRange(A.NonRep, 0, A.NonRep.length);
+            frac.NonRep = new short[0];
+            frac.Rep = new short[0];
+            Number fraction = frac.convert(frac,B.Base);
+            
+            Number lead = new Number();
+            lead.Base = A.Base;
+            lead.Int = new short[frac.Int.length + 1];
+            for(int i = 0; i < frac.Int.length; i++){
+                lead.Int[i] = 0;
+            }
+            lead.Int[frac.Int.length] = 1;
+            lead.NonRep = new short[0];
+            lead.Rep = new short[0];
+            
+            Number leading = lead.convert(lead, B.Base);
+            
+            
+            //System.out.println("frac");
+            //printNumber(frac);
+            
+            //System.out.println("lead");
+            //printNumber(lead);
+            
+            //System.out.println("fraction");
+            //printNumber(fraction);
+            
+            //System.out.println("leading");
+            //printNumber(leading);
+            
+            
+            //long division
+            
+           
+            
+            //by definition the divisor is larger, so to start we need to do top number * base for there to even be a chance
+            
+            int valF = 0; 
+            
+            for(int i = 0; i < fraction.Int.length; i++){
+                valF += (int) fraction.Int[i] * Math.pow(fraction.Base,i);
+                
+                //System.out.println(val);
+            }
+            //System.out.println(valF);
+            
+            
+            int valL = 0; 
+            
+            for(int i = 0; i < leading.Int.length; i++){
+                valL += (int) leading.Int[i] * Math.pow(leading.Base,i);
+                
+                //System.out.println(val);
+            }
+            //System.out.println(valL);
+            
+             ArrayList<Short> remainders = new ArrayList<Short>();
+             ArrayList<Short> quotients = new ArrayList<Short>();
+            
+            short cutOff = -1;
+            
+            //valF *= fraction.Base;
+            
+            while(valF > 0){
+                
+                if(valF < valL){
+                    quotients.add((short)0);
+                    remainders.add((short) valF);
+                    
+                    System.out.println(valF + " rem " + 0 + " quo");
+                    
+                    valF *= fraction.Base;
+                   
+                                        
+                    
+                }else{
+                    short quo = (short)(valF / valL);
+                    quotients.add(quo);
+                    short rem = (short)(valF % valL);
+                    
+                    System.out.println(rem + " rem " + quo + " quo");
+                    
+                    if(remainders.contains(rem)){
+                        cutOff = (short) remainders.indexOf(rem);
+                        remainders.add(rem);
+                        break;
+                    }
+                    
+                    remainders.add(rem);
+                    valF = rem;
+                    valF *= fraction.Base;
+                    
+                }
+            }
+            
+            
+            if(cutOff == -1){
+                B.NonRep = new short[quotients.size()];
+                short counter = 0;
+                
+                for(int i = quotients.size() - 1; i >= 0; i--){
+                    B.NonRep[counter++] = quotients.get(i);
+                }
+                
+            }else{ // repeat
+                B.NonRep = new short[cutOff];
+                
+                System.out.println(B.NonRep.length + " length");
+                
+                B.Rep = new short[quotients.size() - cutOff - 1];
+                short counter = 0;
+                
+                for(int i = 0; i < cutOff; i++){
+                    B.NonRep[i] = quotients.get(cutOff - i);
+                }
+                
+                for(int i = B.Rep.length - 1; i >= 0; i--){
+                    B.Rep[i] = quotients.get(cutOff + 1 + counter);
+                    counter++;
+                }
+                
+                
+            }
+            
+            
+            
+            
+            
+	    	return B;
+	    	}
+	//=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+	    
+        
+	    public void printShortArray(short[] S) {
+	        for (int i = S.length-1; i>=0; i--) {
+	        	System.out.print(S[i]);
+	        }
+	    }   
+	    public void printNumber(Number N) {
+	        System.out.print("(");
+	        N.printShortArray(N.Int);
+	        System.out.print(".");
+	        N.printShortArray(N.NonRep);
+	        System.out.print("{");
+	        N.printShortArray(N.Rep);
+	        System.out.print("})_");
+	        System.out.println(N.Base);
+	    }
+		short Base; short[] Int,NonRep,Rep;
+	};
+	
+Number N1=new Number() ;
+    	N1.Base=10; N1.Int=new short[2]; N1.NonRep=new short[3];
+    	N1.Int[1]=1; N1.Int[0]=9;
+    	N1.NonRep[2]=2; N1.NonRep[1]=4; N1.NonRep[0]=7;
+        //N1.NonRep = new short[0];
+        //N1.NonRep = new short[1]; N1.NonRep[0] = 3;
+    	N1.Rep=new short[0];
+    	N1.printNumber(N1);
+    
+    	Number N2=new Number() ;
+    	short R=2;
+    	N2=N1.convert(N1,R);
+    	N2.printNumber(N2);
+
+	}
+
+}
